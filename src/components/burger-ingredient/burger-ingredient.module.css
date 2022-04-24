@@ -1,0 +1,25 @@
+.ingredient {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  padding: 0;
+  position: relative;
+  cursor: pointer;
+}
+
+.count {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.priceWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.title {
+  text-align: center;
+  min-height: 48px;
+}
