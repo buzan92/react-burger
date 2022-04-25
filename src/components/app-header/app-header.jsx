@@ -25,7 +25,7 @@ const MenuItem = ({ title, Icon, active }) => {
 
 const AppHeader = () => {
   return (
-    <header className={classNames(styles.header, 'pt-4 pb-4')}>
+    <header className={classNames(styles.header, "pt-4 pb-4")}>
       <nav className={styles.headerInner}>
         <ul className={styles.menuList}>
           <MenuItem title="Конструктор" Icon={BurgerIcon} active />

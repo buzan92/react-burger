@@ -1,8 +1,12 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredient from "../burger-ingredient/burger-ingredient";
+import Modal from "../modal/modal";
+import IngredientDetails from "../ingredient-details/ingredient-details";
 import classNames from "classnames/bind";
 import styles from "./burger-ingredients.module.css";
+import { IngredientType } from "../../prop-types/ingredient";
 
 const ingredientTypes = {
   bun: "Булки",
@@ -28,17 +32,22 @@ const Tabs = () => {
   );
 };
 
-const IngredientBlock = ({ title, ingredients }) => {
+const IngredientBlock = ({ title, ingredients, showIngredient }) => {
   return (
     <>
       <h3 className="text_type_main-medium">{title}</h3>
       <ul className={styles.list}>
         {ingredients.map((ingredient, index) => (
-          <BurgerIngredient
+          <li
             key={ingredient._id}
-            ingredient={ingredient}
-            count={index === 0 ? 1 : 0}
-          />
+            className={classNames(styles.ingredient, "mb-10")}
+            onClick={() => showIngredient(ingredient)}
+          >
+            <BurgerIngredient
+              ingredient={ingredient}
+              count={index === 0 ? 1 : 0}
+            />
+          </li>
         ))}
       </ul>
     </>
@@ -46,6 +55,19 @@ const IngredientBlock = ({ title, ingredients }) => {
 };
 
 const BurgerIngredients = ({ ingredients }) => {
+  const [isShowIngredient, setIsShowIngredient] = useState(false);
+  const [selectedIngredient, setSelectedIngredient] = useState(null);
+
+  const showIngredient = ingredient => {
+    setSelectedIngredient(ingredient);
+    setIsShowIngredient(true);
+  };
+
+  const closeIngredient = () => {
+    setIsShowIngredient(false);
+    setSelectedIngredient(null);
+  };
+
   const ingredientsByType = ingredients.reduce(
     (acc, ingredient) => {
       if (!acc[ingredient.type]) {
@@ -63,13 +85,28 @@ const BurgerIngredients = ({ ingredients }) => {
       <div className={classNames(styles.listWrapper, "custom-scroll")}>
         {Object.keys(ingredientTypes).map(type => (
           <IngredientBlock
+            key={type}
             ingredients={ingredientsByType[type]}
             title={ingredientTypes[type]}
+            showIngredient={showIngredient}
           />
         ))}
       </div>
+      <Modal isShow={isShowIngredient} closeModal={closeIngredient}>
+        <IngredientDetails ingredient={selectedIngredient} />
+      </Modal>
     </div>
   );
+};
+
+IngredientBlock.propTypes = {
+  title: PropTypes.string.isRequired,
+  ingredients: PropTypes.arrayOf(IngredientType).isRequired,
+  showIngredient: PropTypes.func.isRequired,
+};
+
+BurgerIngredients.propTypes = {
+  ingredients: PropTypes.arrayOf(IngredientType).isRequired,
 };
 
 export default BurgerIngredients;
