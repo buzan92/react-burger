@@ -1,0 +1,24 @@
+.inner {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 520px;
+}
+
+.title {
+  width: 640px;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-inactive-color);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}

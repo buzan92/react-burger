@@ -1,0 +1,12 @@
+@import 'fonts.css';
+
+body {
+  margin: 0;
+  font-family: 'Jet Brains Mono', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
