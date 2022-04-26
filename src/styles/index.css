@@ -7,7 +7,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.modal-fixed {
-  position: fixed;
-  width: 100%;
+.overflow-hidden {
+  overflow: hidden;
 }

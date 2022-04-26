@@ -39,11 +39,10 @@ const BurgerConstructor = ({ ingredients }) => {
     isLocked: true,
   };
   const lastIngredient = {
-    ...getProps(ingredients[length - 1]),
+    ...firstIgredient,
     type: "bottom",
-    isLocked: true,
   };
-  const remainingIngredients = ingredients.slice(1, length - 1);
+  const remainingIngredients = ingredients.slice(1, length);
 
   const sum = ingredients.reduce(
     (acc, ingredient) => acc + ingredient.price,

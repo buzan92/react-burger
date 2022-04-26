@@ -8,7 +8,8 @@ import {
 import classNames from "classnames/bind";
 import styles from "./app-header.module.css";
 
-const MenuItem = ({ title, Icon, active }) => {
+const MenuItem = ({ title, icon, active }) => {
+  const Icon = icon;
   return (
     <li
       className={classNames(
@@ -28,12 +29,12 @@ const AppHeader = () => {
     <header className={classNames(styles.header, "pt-4 pb-4")}>
       <nav className={styles.headerInner}>
         <ul className={styles.menuList}>
-          <MenuItem title="Конструктор" Icon={BurgerIcon} active />
-          <MenuItem title="Лента заказов" Icon={ListIcon} />
+          <MenuItem title="Конструктор" icon={BurgerIcon} active />
+          <MenuItem title="Лента заказов" icon={ListIcon} />
         </ul>
         <Logo />
         <ul className={styles.menuList}>
-          <MenuItem title="Лента заказов" Icon={ProfileIcon} />
+          <MenuItem title="Лента заказов" icon={ProfileIcon} />
         </ul>
       </nav>
     </header>
@@ -42,7 +43,7 @@ const AppHeader = () => {
 
 MenuItem.propTypes = {
   title: PropTypes.string.isRequired,
-  Icon: PropTypes.func.isRequired,
+  icon: PropTypes.func.isRequired,
   active: PropTypes.bool,
 };
 

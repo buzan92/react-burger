@@ -15,10 +15,10 @@ const Modal = ({ isShow, closeModal, children }) => {
 
   useEffect(() => {
     if (isShow) {
-      document.body.classList.add("modal-fixed");
+      document.body.classList.add("overflow-hidden");
     }
     return () => {
-      document.body.classList.remove("modal-fixed");
+      document.body.classList.remove("overflow-hidden");
     };
   }, [isShow]);
 
