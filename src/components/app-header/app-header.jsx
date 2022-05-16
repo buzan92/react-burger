@@ -34,7 +34,7 @@ const AppHeader = () => {
         </ul>
         <Logo />
         <ul className={styles.menuList}>
-          <MenuItem title="Лента заказов" icon={ProfileIcon} />
+          <MenuItem title="Личный кабинет" icon={ProfileIcon} />
         </ul>
       </nav>
     </header>

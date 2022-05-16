@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredient from "../burger-ingredient/burger-ingredient";
 import Modal from "../modal/modal";
@@ -7,6 +7,7 @@ import IngredientDetails from "../ingredient-details/ingredient-details";
 import classNames from "classnames/bind";
 import styles from "./burger-ingredients.module.css";
 import { IngredientType } from "../../prop-types/ingredient";
+import { AppContext } from "../../services/app-context";
 
 const ingredientTypes = {
   bun: "Булки",
@@ -54,18 +55,16 @@ const IngredientBlock = ({ title, ingredients, showIngredient }) => {
   );
 };
 
-const BurgerIngredients = ({ ingredients }) => {
-  const [isShowIngredient, setIsShowIngredient] = useState(false);
-  const [selectedIngredient, setSelectedIngredient] = useState(null);
+const BurgerIngredients = () => {
+  const { state, dispatch } = useContext(AppContext);
+  const { ingredients, isShowIngredientModal, selectedIngredient } = state;
 
   const showIngredient = ingredient => {
-    setSelectedIngredient(ingredient);
-    setIsShowIngredient(true);
+    dispatch({ type: "toggleIngredient", payload: ingredient });
   };
 
   const closeIngredient = () => {
-    setIsShowIngredient(false);
-    setSelectedIngredient(null);
+    dispatch({ type: "toggleIngredient", payload: null });
   };
 
   const ingredientsByType = ingredients.reduce(
@@ -92,7 +91,7 @@ const BurgerIngredients = ({ ingredients }) => {
           />
         ))}
       </div>
-      <Modal isShow={isShowIngredient} closeModal={closeIngredient}>
+      <Modal isShow={isShowIngredientModal} closeModal={closeIngredient}>
         <IngredientDetails ingredient={selectedIngredient} />
       </Modal>
     </div>
@@ -103,10 +102,6 @@ IngredientBlock.propTypes = {
   title: PropTypes.string.isRequired,
   ingredients: PropTypes.arrayOf(IngredientType).isRequired,
   showIngredient: PropTypes.func.isRequired,
-};
-
-BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(IngredientType).isRequired,
 };
 
 export default BurgerIngredients;

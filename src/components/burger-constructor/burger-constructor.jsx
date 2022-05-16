@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useContext, useEffect } from "react";
 import classNames from "classnames/bind";
-import PropTypes from "prop-types";
 import {
   ConstructorElement,
   DragIcon,
@@ -10,50 +9,62 @@ import {
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import styles from "./burger-constructor.module.css";
-import { IngredientType } from "../../prop-types/ingredient";
+import { AppContext } from "../../services/app-context";
+import { postRequest } from "../../utils/api";
 
-const BurgerConstructor = ({ ingredients }) => {
-  const [isShowOrder, setIsShowOrder] = useState(false);
-  const [orderId, setOrderId] = useState(null);
+const BurgerConstructor = () => {
+  const { state, dispatch } = useContext(AppContext);
+  const {
+    constructor: { ingredients, bun, sum },
+    isShowOrderModal,
+  } = state;
 
-  const showOrder = () => {
-    const orderId = Math.floor(Math.random() * 999999 + 1);
-    setOrderId(orderId);
-    setIsShowOrder(true);
+  useEffect(() => {
+    const ingredientsSum = ingredients.reduce(
+      (acc, ingredient) => acc + ingredient.price,
+      0
+    );
+    const bunSum = bun?.price * 2 || 0;
+
+    dispatch({ type: "setConstructorSum", payload: ingredientsSum + bunSum });
+  }, [bun, ingredients, dispatch]);
+
+  const showOrder = async () => {
+    const ingredientIds = ingredients.map(({ _id }) => _id);
+    const res = await postRequest("orders", { ingredients: ingredientIds });
+    const payload = res?.order ?? null;
+    dispatch({ type: "toggleOrder", payload });
   };
 
   const closeOrder = () => {
-    setOrderId(null);
-    setIsShowOrder(false);
+    dispatch({ type: "toggleOrder", payload: null });
   };
 
   const getProps = ingredient => {
+    if (!ingredient) {
+      return {};
+    }
     const { price, name, image_mobile } = ingredient;
     return { text: name, price, thumbnail: image_mobile };
   };
   const length = ingredients.length;
 
-  const firstIgredient = {
-    ...getProps(ingredients[0]),
+  const bunTop = {
+    ...getProps(bun),
     type: "top",
     isLocked: true,
   };
-  const lastIngredient = {
-    ...firstIgredient,
+  const bunBottom = {
+    ...bunTop,
     type: "bottom",
   };
   const remainingIngredients = ingredients.slice(1, length);
-
-  const sum = ingredients.reduce(
-    (acc, ingredient) => acc + ingredient.price,
-    0
-  );
 
   return (
     <div className={classNames(styles.burgerConstructor, "ml-10")}>
       <div className={styles.list}>
         <div className={classNames(styles.listItem, "mb-4")}>
-          <ConstructorElement {...firstIgredient} />
+          {bun && <ConstructorElement {...bunTop} />}
         </div>
         <ul className={classNames(styles.dragList, "custom-scroll mb-4 pl-3")}>
           {remainingIngredients.map(ingredient => (
@@ -69,7 +80,7 @@ const BurgerConstructor = ({ ingredients }) => {
           ))}
         </ul>
         <div className={classNames(styles.listItem, "mb-10")}>
-          <ConstructorElement {...lastIngredient} />
+          {bun && <ConstructorElement {...bunBottom} />}
         </div>
       </div>
       <div className={styles.cart}>
@@ -77,19 +88,20 @@ const BurgerConstructor = ({ ingredients }) => {
         <div className="ml-4 mr-10">
           <CurrencyIcon type="primary" />
         </div>
-        <Button onClick={showOrder} type="primary" size="medium">
+        <Button
+          onClick={showOrder}
+          disabled={!bun}
+          type="primary"
+          size="medium"
+        >
           Оформить заказ
         </Button>
       </div>
-      <Modal isShow={isShowOrder} closeModal={closeOrder}>
-        <OrderDetails orderId={orderId} />
+      <Modal isShow={isShowOrderModal} closeModal={closeOrder}>
+        <OrderDetails />
       </Modal>
     </div>
   );
-};
-
-BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(IngredientType).isRequired,
 };
 
 export default BurgerConstructor;
