@@ -1,12 +1,8 @@
 import styles from "./ingredient-details.module.css";
 import classNames from "classnames/bind";
 import { IngredientType } from "../../prop-types/ingredient";
-import { useContext } from "react";
-import { AppContext } from "../../services/app-context";
 
 const IngredientDetails = ({ ingredient }) => {
-  const { dispatch } = useContext(AppContext);
-
   const { name, image_large, proteins, fat, carbohydrates, calories } =
     ingredient;
   const nutrients = [
@@ -16,13 +12,13 @@ const IngredientDetails = ({ ingredient }) => {
     { title: "Углеводы, г", value: carbohydrates },
   ];
 
-  const addIngredient = ingredient => {
-    const type =
-      ingredient.type === "bun"
-        ? "addConstructorBun"
-        : "addConstructorIngredient";
-    dispatch({ type, payload: ingredient });
-  };
+  // const addIngredient = ingredient => {
+  //   const type =
+  //     ingredient.type === "bun"
+  //       ? "addConstructorBun"
+  //       : "addConstructorIngredient";
+  //   dispatch({ type, payload: ingredient });
+  // };
 
   return (
     <>

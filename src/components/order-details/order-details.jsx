@@ -1,12 +1,11 @@
-import { useContext } from "react";
+import { useSelector } from "react-redux";
 import classNames from "classnames/bind";
 import styles from "./order-details.module.css";
 import doneImage from "../../images/done.png";
-import { AppContext } from "../../services/app-context";
 
 const OrderDetails = () => {
-  const { state } = useContext(AppContext);
-  const formattedId = String(state.order?.number || "").padStart(6, "0");
+  const { order } = useSelector(state => state.construct);
+  const formattedId = String(order?.number || "").padStart(6, "0");
 
   return (
     <div className={classNames(styles.order, "mb-15")}>
