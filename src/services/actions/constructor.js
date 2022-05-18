@@ -24,17 +24,18 @@ export const sortIngredient = (oldIndex, index) => ({
 
 export const setSum = sum => ({ type: SET_SUM, payload: sum });
 export const clearConstructor = () => ({ type: CLEAR_CONSTRUCTOR });
+export const toggleOrder = (payload) => ({ type: TOGGLE_ORDER, payload });
 
 export const createOrder = ingredients => dispatch => {
   postRequest("orders", { ingredients })
     .then(res => {
       if (res.success) {
-        dispatch({ type: TOGGLE_ORDER, payload: res.order });
-        dispatch({ type: CLEAR_CONSTRUCTOR });
+        dispatch(toggleOrder(res.order));
+        dispatch(clearConstructor());
       }
     })
     .catch(error => {
-      dispatch({ type: TOGGLE_ORDER, payload: null });
+      dispatch(toggleOrder(null));
     });
 };
-export const toggleOrder = (payload) => ({ type: TOGGLE_ORDER, payload });
+

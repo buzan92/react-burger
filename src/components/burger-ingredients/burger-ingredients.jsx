@@ -19,8 +19,15 @@ const ingredientTypes = {
   main: "Начинки",
 };
 
-const Tabs = () => {
+const Tabs = ({ blocksRef }) => {
   const { activeTab } = useSelector(state => state.ingredients);
+  const handleTabClick = type => {
+    blocksRef.current[type].scrollIntoView({
+      block: "start",
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div className={classNames(styles.tabsWrapper, "mb-10")}>
       {Object.keys(ingredientTypes).map(type => (
@@ -28,6 +35,7 @@ const Tabs = () => {
           key={type}
           value={type}
           active={activeTab === type}
+          onClick={() => handleTabClick(type)}
         >
           {ingredientTypes[type]}
         </Tab>
@@ -115,7 +123,7 @@ const BurgerIngredients = () => {
 
   return (
     <div className={classNames(styles.burgerIngredients, "mr-10")}>
-      <Tabs />
+      <Tabs blocksRef={blocksRef} />
       <div
         onScroll={handleScroll}
         className={classNames(styles.listWrapper, "custom-scroll")}
@@ -145,6 +153,12 @@ IngredientBlock.propTypes = {
   title: PropTypes.string.isRequired,
   ingredients: PropTypes.arrayOf(IngredientType).isRequired,
   showIngredient: PropTypes.func.isRequired,
+};
+
+Tabs.propTypes = {
+  blocksRef: PropTypes.shape({
+    current: PropTypes.objectOf(PropTypes.instanceOf(Element)),
+  }).isRequired,
 };
 
 export default BurgerIngredients;

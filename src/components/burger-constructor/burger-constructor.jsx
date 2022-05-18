@@ -69,36 +69,35 @@ const BurgerConstructor = () => {
     };
   };
 
-  const bunTop = {
-    ...getProps(bun, 0),
-    type: "top",
-    isLocked: true,
-  };
+  const bunProps = { ...getProps(bun, 0), isLocked: true };
+
+  const bunTop = { ...bunProps, text: `${bunProps.text} (верх)`, type: "top" };
   const bunBottom = {
     ...bunTop,
+    text: `${bunProps.text} (низ)`,
     type: "bottom",
   };
 
   const [, dragList] = useDrop({ accept: "ingredient-sort" });
 
   const findIngredient = useCallback(
-    (uuid) => {
-      const ingredient = ingredients.filter((i) => i.uuid === uuid)[0];
+    uuid => {
+      const ingredient = ingredients.filter(i => i.uuid === uuid)[0];
       return {
         ingredient,
         index: ingredients.indexOf(ingredient),
-      }
+      };
     },
-    [ingredients],
-  )
+    [ingredients]
+  );
 
   const moveIngredient = useCallback(
     (uuid, atIndex) => {
-      const { index } = findIngredient(uuid)
+      const { index } = findIngredient(uuid);
       dispatch(sortIngredient(index, atIndex));
     },
-    [findIngredient, dispatch],
-  )
+    [findIngredient, dispatch]
+  );
 
   return (
     <div className={classNames(styles.burgerConstructor, "ml-10")}>

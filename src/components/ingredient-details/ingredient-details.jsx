@@ -12,14 +12,6 @@ const IngredientDetails = ({ ingredient }) => {
     { title: "Углеводы, г", value: carbohydrates },
   ];
 
-  // const addIngredient = ingredient => {
-  //   const type =
-  //     ingredient.type === "bun"
-  //       ? "addConstructorBun"
-  //       : "addConstructorIngredient";
-  //   dispatch({ type, payload: ingredient });
-  // };
-
   return (
     <>
       <h1 className={classNames(styles.title, "text_type_main-large mt-3")}>
