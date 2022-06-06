@@ -1,10 +1,11 @@
-import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 import classNames from "classnames/bind";
 import styles from "./order-details.module.css";
 import doneImage from "../../images/done.png";
 
-const OrderDetails = ({ orderId }) => {
-  const formattedId = String(orderId).padStart(6, "0");
+const OrderDetails = () => {
+  const { order } = useSelector(state => state.construct);
+  const formattedId = String(order?.number || "").padStart(6, "0");
 
   return (
     <div className={classNames(styles.order, "mb-15")}>
@@ -25,10 +26,6 @@ const OrderDetails = ({ orderId }) => {
       </span>
     </div>
   );
-};
-
-OrderDetails.propTypes = {
-  orderId: PropTypes.number,
 };
 
 export default OrderDetails;

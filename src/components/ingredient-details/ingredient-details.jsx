@@ -11,6 +11,7 @@ const IngredientDetails = ({ ingredient }) => {
     { title: "Жиры, г", value: fat },
     { title: "Углеводы, г", value: carbohydrates },
   ];
+
   return (
     <>
       <h1 className={classNames(styles.title, "text_type_main-large mt-3")}>

@@ -12,6 +12,12 @@
   padding-right: 7px;
   max-height: calc(100vh - 300px);
   overflow-y: scroll;
+  position: relative;
+}
+
+.groupWrapper {
+  display: flex;
+  flex-direction: column;
 }
 
 .list {

@@ -1,26 +1,23 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import styles from "./app.module.css";
-
-import { getData } from "../../utils/api";
+import { getIngredients } from "../../services/actions/ingredients";
 
 function App() {
-  const [data, setData] = useState([]);
-  const [error, setError] = useState(false);
+  const dispatch = useDispatch();
+  const { ingredients, appError } = useSelector(state => state.ingredients);
 
-  const getIngredients = useCallback(async () => {
-    const res = await getData("ingredients");
-    if (res && res.success) {
-      setData(res.data);
-    } else {
-      setError(true);
-    }
-  }, []);
+  const getIngredientsWithCallback = useCallback(() => {
+    return dispatch(getIngredients());
+  }, [dispatch]);
 
   useEffect(() => {
-    getIngredients();
+    getIngredientsWithCallback();
   }, []);
 
   const title = "Соберите бургер";
@@ -29,17 +26,19 @@ function App() {
     <div className={styles.app}>
       <AppHeader />
       <main className={styles.main}>
-        {error ? (
+        {appError ? (
           <h1 className="text_type_main-large mt-10">Что-то пошло не так (=</h1>
         ) : (
           <>
             <h1 className="text_type_main-large mt-10 mb-5">{title}</h1>
-            {data.length > 0 && (
-              <div className={styles.content}>
-                <BurgerIngredients ingredients={data} />
-                <BurgerConstructor ingredients={data} />
-              </div>
-            )}
+            <DndProvider backend={HTML5Backend}>
+              {ingredients.length > 0 && (
+                <div className={styles.content}>
+                  <BurgerIngredients />
+                  <BurgerConstructor />
+                </div>
+              )}
+            </DndProvider>
           </>
         )}
       </main>
