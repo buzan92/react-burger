@@ -5,37 +5,56 @@ import {
   ListIcon,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { NavLink, useLocation } from "react-router-dom";
 import classNames from "classnames/bind";
 import styles from "./app-header.module.css";
 
-const MenuItem = ({ title, icon, active }) => {
+const MenuItem = ({ title, icon, to, exact, isActive }) => {
   const Icon = icon;
+
   return (
-    <li
-      className={classNames(
-        styles.menuItem,
-        { [styles.active]: active },
-        "pt-4 pb-4 pl-5 pr-5"
-      )}
+    <NavLink
+      to={to}
+      exact={exact}
+      isActive={isActive}
+      activeClassName={styles.active}
+      className={classNames(styles.menuItem, "pt-4 pb-4 pl-5 pr-5")}
     >
       <Icon type="primary" />
       <span className="ml-2 text_type_main-default">{title}</span>
-    </li>
+    </NavLink>
   );
 };
 
 const AppHeader = () => {
+  const location = useLocation();
+  const isHomeActive = () => {
+    return location.pathname === '/' || location.state?.isModal;
+  };
+
   return (
     <header className={classNames(styles.header, "pt-4 pb-4")}>
       <nav className={styles.headerInner}>
-        <ul className={styles.menuList}>
-          <MenuItem title="Конструктор" icon={BurgerIcon} active />
-          <MenuItem title="Лента заказов" icon={ListIcon} />
-        </ul>
-        <Logo />
-        <ul className={styles.menuList}>
-          <MenuItem title="Личный кабинет" icon={ProfileIcon} />
-        </ul>
+        <div className={styles.menuList}>
+          <MenuItem
+            title="Конструктор"
+            icon={BurgerIcon}
+            to="/"
+            isActive={isHomeActive}
+          />
+          <MenuItem
+            title="Лента заказов"
+            icon={ListIcon}
+            to="/feed"
+            exact={true}
+          />
+        </div>
+        <div className={styles.logoWrapper}>
+          <Logo className="logo" />
+        </div>
+        <div className={styles.menuList}>
+          <MenuItem title="Личный кабинет" icon={ProfileIcon} to="/profile" />
+        </div>
       </nav>
     </header>
   );
@@ -44,7 +63,9 @@ const AppHeader = () => {
 MenuItem.propTypes = {
   title: PropTypes.string.isRequired,
   icon: PropTypes.func.isRequired,
-  active: PropTypes.bool,
+  to: PropTypes.string.isRequired,
+  exact: PropTypes.bool,
+  isActive: PropTypes.func,
 };
 
 export default AppHeader;

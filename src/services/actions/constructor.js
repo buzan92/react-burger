@@ -1,4 +1,4 @@
-import { postRequest } from "../../utils/api";
+import { postRequest, checkToken } from "../../utils/api";
 
 export const ADD_INGREDIENT = "ADD_INGREDIENT";
 export const DELETE_INGREDIENT = "DELETE_INGREDIENT";
@@ -26,16 +26,16 @@ export const setSum = sum => ({ type: SET_SUM, payload: sum });
 export const clearConstructor = () => ({ type: CLEAR_CONSTRUCTOR });
 export const toggleOrder = (payload) => ({ type: TOGGLE_ORDER, payload });
 
-export const createOrder = ingredients => dispatch => {
-  postRequest("orders", { ingredients })
-    .then(res => {
-      if (res.success) {
-        dispatch(toggleOrder(res.order));
-        dispatch(clearConstructor());
-      }
-    })
-    .catch(error => {
-      dispatch(toggleOrder(null));
-    });
+export const createOrder = ingredients => async dispatch => {
+  try {
+    await checkToken();
+    const res = await postRequest("orders", { ingredients });
+    if (res.success) {
+      dispatch(toggleOrder(res.order));
+      dispatch(clearConstructor());
+    }
+  } catch (error) {
+    dispatch(toggleOrder(null));
+  }
 };
 

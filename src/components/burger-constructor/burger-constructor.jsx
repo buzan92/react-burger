@@ -1,5 +1,7 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
+import Cookies from "js-cookie";
 import classNames from "classnames/bind";
+import { useHistory } from "react-router-dom";
 import {
   ConstructorElement,
   DragIcon,
@@ -20,12 +22,15 @@ import {
   toggleOrder,
   sortIngredient,
 } from "../../services/actions/constructor";
+import Loader from "../loader/loader";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { ingredients, bun, sum, isShowOrderModal } = useSelector(
     state => state.construct
   );
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const ingredientsSum = ingredients.reduce(
@@ -45,9 +50,15 @@ const BurgerConstructor = () => {
   });
 
   const showOrder = async () => {
+    if (!Cookies.get("refreshToken")) {
+      history.push("/login");
+      return;
+    }
     const ingredientIds = ingredients.map(({ _id }) => _id);
     ingredientIds.push(...[bun._id, bun._id]);
-    dispatch(createOrder(ingredientIds));
+    setIsLoading(true);
+    await dispatch(createOrder(ingredientIds));
+    setIsLoading(false);
   };
 
   const closeOrder = () => {
@@ -140,7 +151,7 @@ const BurgerConstructor = () => {
           type="primary"
           size="medium"
         >
-          Оформить заказ
+          {isLoading ? <Loader /> : "Оформить заказ"}
         </Button>
       </div>
       <Modal isShow={isShowOrderModal} closeModal={closeOrder}>

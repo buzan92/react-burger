@@ -2,12 +2,11 @@ import PropTypes from "prop-types";
 import { useRef } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredient from "../burger-ingredient/burger-ingredient";
-import Modal from "../modal/modal";
-import IngredientDetails from "../ingredient-details/ingredient-details";
 import classNames from "classnames/bind";
 import styles from "./burger-ingredients.module.css";
 import { IngredientType } from "../../prop-types/ingredient";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   toggleSelectedIngredient,
   setActiveTab,
@@ -70,10 +69,17 @@ const IngredientBlock = ({ title, ingredients, showIngredient }) => {
             className={classNames(styles.ingredient, "mb-10")}
             onClick={() => showIngredient(ingredient)}
           >
-            <BurgerIngredient
-              ingredient={ingredient}
-              count={counts[ingredient._id] || 0}
-            />
+            <Link
+              to={{
+                pathname: `/ingredients/${ingredient._id}`,
+                state: { isModal: true },
+              }}
+            >
+              <BurgerIngredient
+                ingredient={ingredient}
+                count={counts[ingredient._id] || 0}
+              />
+            </Link>
           </li>
         ))}
       </ul>
@@ -83,15 +89,10 @@ const IngredientBlock = ({ title, ingredients, showIngredient }) => {
 
 const BurgerIngredients = () => {
   const dispatch = useDispatch();
-  const { ingredients, isShowIngredientModal, selectedIngredient, activeTab } =
-    useSelector(state => state.ingredients);
+  const { ingredients, activeTab } = useSelector(state => state.ingredients);
 
   const showIngredient = ingredient => {
     dispatch(toggleSelectedIngredient(ingredient));
-  };
-
-  const closeIngredient = () => {
-    dispatch(toggleSelectedIngredient(null));
   };
 
   const blocksRef = useRef({});
@@ -142,9 +143,6 @@ const BurgerIngredients = () => {
           </div>
         ))}
       </div>
-      <Modal isShow={isShowIngredientModal} closeModal={closeIngredient}>
-        <IngredientDetails ingredient={selectedIngredient} />
-      </Modal>
     </div>
   );
 };
