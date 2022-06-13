@@ -5,7 +5,7 @@ import {
   ListIcon,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, Link, useLocation } from "react-router-dom";
 import classNames from "classnames/bind";
 import styles from "./app-header.module.css";
 
@@ -49,9 +49,9 @@ const AppHeader = () => {
             exact={true}
           />
         </div>
-        <div className={styles.logoWrapper}>
+        <Link to="/" className={styles.logoWrapper}>
           <Logo className="logo" />
-        </div>
+        </Link>
         <div className={styles.menuList}>
           <MenuItem title="Личный кабинет" icon={ProfileIcon} to="/profile" />
         </div>

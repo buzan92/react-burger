@@ -18,10 +18,14 @@ export const checkToken = async () => {
   if (Cookies.get("accessToken")) {
     return;
   }
-  const token = Cookies.get("refreshToken");
-  const res = await postRequest("auth/token", { token });
-  if (res.success) {
-    setToken(res);
+  try {
+    const token = Cookies.get("refreshToken");
+    const res = await postRequest("auth/token", { token });
+    if (res.success) {
+      setToken(res);
+    }
+  } catch (error) {
+    console.error('checkToken error', error);
   }
 };
 

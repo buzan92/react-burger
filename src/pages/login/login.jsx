@@ -6,14 +6,13 @@ import {
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
-import Cookies from "js-cookie";
 import { login } from "../../services/actions/user";
 import Loader from "../../components/loader/loader";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { isLoading } = useSelector(state => state.user);
+  const { isLoading, isLoggedIn } = useSelector(state => state.user);
   const [form, setForm] = useState({ email: "", password: "" });
 
   const onSubmit = e => {
@@ -31,7 +30,7 @@ const LoginPage = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  if (Cookies.get('refreshToken')) {
+  if (isLoggedIn) {
     return <Redirect to={history.location.state?.from || '/'} />;
   }
 

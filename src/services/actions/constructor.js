@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { postRequest, checkToken } from "../../utils/api";
 
 export const ADD_INGREDIENT = "ADD_INGREDIENT";
@@ -7,10 +8,13 @@ export const SET_SUM = "SET_SUM";
 export const CLEAR_CONSTRUCTOR = "CLEAR_CONSTRUCTOR";
 export const TOGGLE_ORDER = "TOGGLE_ORDER";
 
-export const addIngredient = ingredient => ({
-  type: ADD_INGREDIENT,
-  payload: ingredient,
-});
+export const addIngredient = ingredient => {
+  const uuid = uuidv4();
+  return {
+    type: ADD_INGREDIENT,
+    payload: Object.assign({}, ingredient, { uuid }),
+  };
+};
 
 export const deleteIngredient = index => ({
   type: DELETE_INGREDIENT,

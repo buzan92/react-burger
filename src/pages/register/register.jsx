@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Cookies from "js-cookie";
 import { Link, useHistory, Redirect } from "react-router-dom";
 import {
   Button,
@@ -14,7 +13,7 @@ import Loader from "../../components/loader/loader";
 const RegisterPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { isLoading } = useSelector(state => state.user);
+  const { isLoading, isLoggedIn } = useSelector(state => state.user);
   const [form, setForm] = useState({ name: "", email: "", password: "" });
 
   const onSubmit = e => {
@@ -32,7 +31,7 @@ const RegisterPage = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  if (Cookies.get('refreshToken')) {
+  if (isLoggedIn) {
     return <Redirect to={history.location.state?.from || '/'} />;
   }
 

@@ -1,14 +1,15 @@
 import { Route, Redirect } from "react-router-dom";
-import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
 const ProtectedRoute = ({ path, children }) => {
-  const isAuth = Cookies.get("refreshToken");
+  const { isLoggedIn } = useSelector(store => store.user);
+
   return (
     <Route
       path={path}
       render={({ location }) =>
-        isAuth ? (
+        isLoggedIn ? (
           children
         ) : (
           <Redirect
