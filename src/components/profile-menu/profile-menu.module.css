@@ -1,0 +1,21 @@
+.profileMenu {
+  max-width: 320px;
+  width: 100%;
+  margin-right: 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+.profileMenuLink {
+  display: flex;
+  height: 64px;
+  align-items: center;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+  color: var(--text-inactive-color);
+}
+
+.profileMenuLink:hover,
+.profileMenuLink.active {
+  color: var(--text-primary-color);
+}

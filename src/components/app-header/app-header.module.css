@@ -19,6 +19,16 @@
   list-style-type: none;
   margin: 0;
   padding: 0;
+  flex: 1;
+}
+
+.menuList:last-child {
+  justify-content: flex-end;
+}
+
+.logoWrapper {
+  flex: 1;
+  text-align: center;
 }
 
 .menuItem {

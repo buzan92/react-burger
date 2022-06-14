@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
-
 import {
   ADD_INGREDIENT,
   DELETE_INGREDIENT,
@@ -20,16 +18,12 @@ const initialState = {
 export const constructorReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case ADD_INGREDIENT:
-      const uuid = uuidv4();
       const isBun = payload.type === "bun";
       return {
         ...state,
         ...(isBun && { bun: payload }),
         ...(!isBun && {
-          ingredients: [
-            ...state.ingredients,
-            Object.assign({}, payload, { uuid }),
-          ],
+          ingredients: [...state.ingredients, payload],
         }),
       };
     case DELETE_INGREDIENT:

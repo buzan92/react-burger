@@ -1,49 +1,65 @@
-import { useEffect, useCallback } from "react";
+import { Route, Switch, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import AppHeader from "../app-header/app-header";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
-import styles from "./app.module.css";
+import { useEffect, useCallback } from "react";
 import { getIngredients } from "../../services/actions/ingredients";
+import { autoLogin } from "../../services/actions/user";
+import AppHeader from "../app-header/app-header";
+import HomePage from "../../pages/home/home";
+import LoginPage from "../../pages/login/login";
+import RegisterPage from "../../pages/register/register";
+import ForgotPasswordPage from "../../pages/forgot-password/forgot-password";
+import ResetPasswordPage from "../../pages/reset-password/reset-password";
+import NotFoundPage from "../../pages/not-found/not-found";
+import ProfilePage from "../../pages/profile/profile";
+import IngredientDetailsPage from "../../pages/ingredient-details/ingredient-details";
+import IngredientDetailsModal from "../ingredient-details-modal/ingredient-details-modal";
+import ProtectedRoute from "../protected-route/protected-route";
+import Loader from "../loader/loader";
 
-function App() {
+const App = () => {
+  const { isAppLoaded } = useSelector(state => state.ingredients);
+  const location = useLocation();
   const dispatch = useDispatch();
-  const { ingredients, appError } = useSelector(state => state.ingredients);
 
-  const getIngredientsWithCallback = useCallback(() => {
-    return dispatch(getIngredients());
+  const initApp = useCallback(async () => {
+    await dispatch(autoLogin());
+    await dispatch(getIngredients());
   }, [dispatch]);
 
   useEffect(() => {
-    getIngredientsWithCallback();
+    initApp();
   }, []);
 
-  const title = "Соберите бургер";
+  const isModal = location.state?.isModal;
 
   return (
-    <div className={styles.app}>
+    <>
       <AppHeader />
-      <main className={styles.main}>
-        {appError ? (
-          <h1 className="text_type_main-large mt-10">Что-то пошло не так (=</h1>
-        ) : (
-          <>
-            <h1 className="text_type_main-large mt-10 mb-5">{title}</h1>
-            <DndProvider backend={HTML5Backend}>
-              {ingredients.length > 0 && (
-                <div className={styles.content}>
-                  <BurgerIngredients />
-                  <BurgerConstructor />
-                </div>
-              )}
-            </DndProvider>
-          </>
-        )}
-      </main>
-    </div>
+      {isAppLoaded ? (
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/register" component={RegisterPage} />
+          <Route exact path="/forgot-password" component={ForgotPasswordPage} />
+          <Route exact path="/reset-password" component={ResetPasswordPage} />
+          <Route exact path="/ingredients/:id">
+            {isModal ? (
+              <>
+                <HomePage />
+                <IngredientDetailsModal />
+              </>
+            ) : (
+              <IngredientDetailsPage />
+            )}
+          </Route>
+          <ProtectedRoute path="/profile">
+            <ProfilePage />
+          </ProtectedRoute>
+          <Route component={NotFoundPage} />
+        </Switch>
+      ) : <div className="mt-45"><Loader /></div>}
+    </>
   );
-}
+};
 
 export default App;

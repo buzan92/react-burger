@@ -7,6 +7,7 @@ import {
 
 const initialState = {
   ingredients: [],
+  isAppLoaded: false,
   appError: false,
   activeTab: "bun",
   selectedIngredient: null,
@@ -16,7 +17,7 @@ const initialState = {
 export const ingredientsReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case SET_INGREDIENTS:
-      return { ...state, ingredients: payload };
+      return { ...state, ingredients: payload, isAppLoaded: true };
     case SET_APP_ERROR:
       return { ...state, appError: payload };
     case SET_ACTIVE_TAB:
