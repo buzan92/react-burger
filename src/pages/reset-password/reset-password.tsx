@@ -8,18 +8,19 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { resetPassword } from "../../services/actions/user";
 import Loader from "../../components/loader/loader";
+import { IState } from "../../types";
 
 const ResetPasswordPage = () => {
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const location = useLocation();
-  const { isLoading, isLoggedIn } = useSelector(state => state.user);
+  const dispatch: any = useDispatch();
+  const history = useHistory<{ from: string }>();
+  const location = useLocation<{ from: Location }>();
+  const { isLoading, isLoggedIn } = useSelector((state: IState) => state.user);
   const [form, setForm] = useState({ password: "", token: "" });
 
-  const onSubmit = e => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(
-      resetPassword(form, isSuccess => {
+      resetPassword(form, (isSuccess: boolean) => {
         if (isSuccess) {
           history.replace({ pathname: "/login" });
         }
@@ -27,16 +28,16 @@ const ResetPasswordPage = () => {
     );
   };
 
-  const onChange = e => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   if (isLoggedIn) {
-    return <Redirect to={history.location.state?.from || '/'} />;
+    return <Redirect to={history.location.state?.from || "/"} />;
   }
 
-  if (location?.from?.pathname !== '/forgot-password') {
-    return <Redirect to={'/forgot-password'} />;
+  if (location?.state?.from?.pathname !== "/forgot-password") {
+    return <Redirect to={"/forgot-password"} />;
   }
 
   return (

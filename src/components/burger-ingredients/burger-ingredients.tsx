@@ -1,26 +1,25 @@
-import PropTypes from "prop-types";
-import { useRef } from "react";
+import { FC, useRef } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredient from "../burger-ingredient/burger-ingredient";
 import classNames from "classnames/bind";
 import styles from "./burger-ingredients.module.css";
-import { IngredientType } from "../../prop-types/ingredient";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   toggleSelectedIngredient,
   setActiveTab,
 } from "../../services/actions/ingredients";
+import { IIngredient, IState } from "../../types";
 
-const ingredientTypes = {
+const ingredientTypes: { [type: string]: string } = {
   bun: "Булки",
   sauce: "Соусы",
   main: "Начинки",
 };
 
-const Tabs = ({ blocksRef }) => {
-  const { activeTab } = useSelector(state => state.ingredients);
-  const handleTabClick = type => {
+const Tabs: FC<ITabs> = ({ blocksRef }) => {
+  const { activeTab } = useSelector((state: IState) => state.ingredients);
+  const handleTabClick = (type: string) => {
     blocksRef.current[type].scrollIntoView({
       block: "start",
       behavior: "smooth",
@@ -43,9 +42,13 @@ const Tabs = ({ blocksRef }) => {
   );
 };
 
-const IngredientBlock = ({ title, ingredients, showIngredient }) => {
+const IngredientBlock: FC<IIngredientBlock> = ({
+  title,
+  ingredients,
+  showIngredient,
+}) => {
   const { ingredients: burgerIngredients, bun } = useSelector(
-    state => state.construct
+    (state: IState) => state.construct
   );
 
   const counts = burgerIngredients.reduce(
@@ -63,7 +66,7 @@ const IngredientBlock = ({ title, ingredients, showIngredient }) => {
     <>
       <h3 className="text_type_main-medium">{title}</h3>
       <ul className={styles.list}>
-        {ingredients.map((ingredient, index) => (
+        {ingredients.map(ingredient => (
           <li
             key={ingredient._id}
             className={classNames(styles.ingredient, "mb-10")}
@@ -88,21 +91,23 @@ const IngredientBlock = ({ title, ingredients, showIngredient }) => {
 };
 
 const BurgerIngredients = () => {
-  const dispatch = useDispatch();
-  const { ingredients, activeTab } = useSelector(state => state.ingredients);
+  const dispatch: any = useDispatch();
+  const { ingredients, activeTab } = useSelector(
+    (state: IState) => state.ingredients
+  );
 
-  const showIngredient = ingredient => {
+  const showIngredient = (ingredient: IIngredient) => {
     dispatch(toggleSelectedIngredient(ingredient));
   };
 
-  const blocksRef = useRef({});
+  const blocksRef = useRef<{ [key: string]: HTMLDivElement }>({});
   const blocksOffset = Object.keys(blocksRef.current).reduce((acc, key) => {
     acc[key] = blocksRef.current[key].offsetTop;
     return acc;
-  }, {});
+  }, {} as { [key: string]: number });
 
-  const handleScroll = event => {
-    const { scrollTop } = event.target;
+  const handleScroll = (event: React.UIEvent<HTMLElement>) => {
+    const { scrollTop } = event.currentTarget;
     const tab = Object.keys(blocksOffset).reduce((acc, key) => {
       return (acc = scrollTop >= blocksOffset[key] ? key : acc);
     }, "");
@@ -119,7 +124,7 @@ const BurgerIngredients = () => {
       acc[ingredient.type].push(ingredient);
       return acc;
     },
-    { bun: [], sauce: [], main: [] }
+    { bun: [], sauce: [], main: [] } as { [type: string]: IIngredient[] }
   );
 
   return (
@@ -131,7 +136,7 @@ const BurgerIngredients = () => {
       >
         {Object.keys(ingredientTypes).map(type => (
           <div
-            ref={el => (blocksRef.current[type] = el)}
+            ref={(el: HTMLDivElement) => (blocksRef.current[type] = el)}
             key={type}
             className={classNames(styles.groupWrapper)}
           >
@@ -147,16 +152,16 @@ const BurgerIngredients = () => {
   );
 };
 
-IngredientBlock.propTypes = {
-  title: PropTypes.string.isRequired,
-  ingredients: PropTypes.arrayOf(IngredientType).isRequired,
-  showIngredient: PropTypes.func.isRequired,
-};
+interface IIngredientBlock {
+  title: string;
+  ingredients: IIngredient[];
+  showIngredient: (ingredient: IIngredient) => void;
+}
 
-Tabs.propTypes = {
-  blocksRef: PropTypes.shape({
-    current: PropTypes.objectOf(PropTypes.instanceOf(Element)),
-  }).isRequired,
-};
+interface ITabs {
+  blocksRef: {
+    current: Record<string, HTMLDivElement>;
+  };
+}
 
 export default BurgerIngredients;

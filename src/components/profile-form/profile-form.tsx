@@ -8,34 +8,34 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getUser, updateUser } from "../../services/actions/user";
 import Loader from "../../components/loader/loader";
+import { IState, TResponse, IUserResponse } from "../../types";
 
 const ProfileForm = () => {
-  const dispatch = useDispatch();
-  const { isLoading, user } = useSelector(state => state.user);
+  const dispatch: any = useDispatch();
+  const { isLoading, user } = useSelector((state: IState) => state.user);
   const [form, setForm] = useState({ name: "", email: "", password: "" });
 
   useEffect(() => {
     dispatch(
-      getUser(res => {
+      getUser((res: TResponse<IUserResponse>) => {
         if (res.success) {
           const { name, email } = res.user;
           setForm({ ...form, name, email });
         }
       })
     );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSubmit = e => {
-    e.preventDefault();
+  const onSubmit = () => {
     dispatch(updateUser(form));
   };
 
-  const cancelEdit = e => {
-    e.preventDefault();
+  const cancelEdit = () => {
     setForm({ ...user, password: "" });
   };
 
-  const onChange = e => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 

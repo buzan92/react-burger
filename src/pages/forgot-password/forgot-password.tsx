@@ -7,26 +7,27 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { forgotPassword } from "../../services/actions/user";
 import Loader from "../../components/loader/loader";
+import { IState } from "../../types";
 
 const ForgotPasswordPage = () => {
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const { isLoading } = useSelector(state => state.user);
+  const { isLoading } = useSelector((state: IState) => state.user);
   const [form, setForm] = useState({ email: "" });
 
-  const onSubmit = e => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(
-      forgotPassword(form, isSuccess => {
+      forgotPassword(form, (isSuccess: boolean) => {
         if (isSuccess) {
-          history.push({ pathname: "/reset-password", from: location });
+          history.push("/reset-password", { from: location });
         }
       })
     );
   };
 
-  const onChange = e => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 

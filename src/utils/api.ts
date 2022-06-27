@@ -1,14 +1,17 @@
+import { TResponse, ITokenResponse } from "../types";
 import Cookies from "js-cookie";
 const API_URL = "https://norma.nomoreparties.space/api/";
 
-const handleResponse = response => {
+const handleResponse = (response: Response) => {
   if (response.ok) {
     return response.json();
   }
   return Promise.reject(response.status);
 };
 
-export const setToken = res => {
+export const setToken = (
+  res: TResponse<ITokenResponse>
+) => {
   const expires = new Date(new Date().getTime() + 20 * 60 * 1000);
   Cookies.set("accessToken", res.accessToken, { expires });
   Cookies.set("refreshToken", res.refreshToken);
@@ -25,21 +28,21 @@ export const checkToken = async () => {
       setToken(res);
     }
   } catch (error) {
-    console.error('checkToken error', error);
+    console.error("checkToken error", error);
   }
 };
 
-export const getRequest = async route => {
-  const token = Cookies.get('accessToken');
+export const getRequest = async (route: string) => {
+  const token = Cookies.get("accessToken") || "";
   return await fetch(`${API_URL}${route}`, {
     headers: {
       authorization: token,
-    }
+    },
   }).then(handleResponse);
 };
 
-export const postRequest = async (route, data) => {
-  const token = Cookies.get('accessToken');
+export const postRequest = async (route: string, data: any) => {
+  const token = Cookies.get("accessToken") || "";
   return await fetch(`${API_URL}${route}`, {
     method: "POST",
     body: JSON.stringify(data),
@@ -50,8 +53,8 @@ export const postRequest = async (route, data) => {
   }).then(handleResponse);
 };
 
-export const pathRequest = async (route, data) => {
-  const token = Cookies.get('accessToken');
+export const pathRequest = async (route: string, data: any) => {
+  const token = Cookies.get("accessToken") || "";
   return await fetch(`${API_URL}${route}`, {
     method: "PATCH",
     body: JSON.stringify(data),

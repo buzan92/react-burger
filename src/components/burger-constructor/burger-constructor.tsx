@@ -23,12 +23,15 @@ import {
   sortIngredient,
 } from "../../services/actions/constructor";
 import Loader from "../loader/loader";
+import { IIngredient, IState } from "../../types";
+
+type TBunType = "top" | "bottom" | undefined;
 
 const BurgerConstructor = () => {
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const history = useHistory();
   const { ingredients, bun, sum, isShowOrderModal } = useSelector(
-    state => state.construct
+    state => (state as IState).construct
   );
   const [isLoading, setIsLoading] = useState(false);
 
@@ -37,7 +40,7 @@ const BurgerConstructor = () => {
       (acc, ingredient) => acc + ingredient.price,
       0
     );
-    const bunSum = bun?.price * 2 || 0;
+    const bunSum = (bun?.price || 0) * 2;
 
     dispatch(setSum(ingredientsSum + bunSum));
   }, [bun, ingredients, dispatch]);
@@ -55,7 +58,9 @@ const BurgerConstructor = () => {
       return;
     }
     const ingredientIds = ingredients.map(({ _id }) => _id);
-    ingredientIds.push(...[bun._id, bun._id]);
+    if (bun?._id) {
+      ingredientIds.push(...[bun._id, bun._id]);
+    }
     setIsLoading(true);
     await dispatch(createOrder(ingredientIds));
     setIsLoading(false);
@@ -65,28 +70,37 @@ const BurgerConstructor = () => {
     dispatch(toggleOrder(null));
   };
 
-  const getProps = (ingredient, index) => {
-    if (!ingredient) {
-      return {};
-    }
+  const getProps = (
+    ingredient: IIngredient,
+    index: number
+  ): {
+    text: string;
+    price: number;
+    thumbnail: string;
+    handleClose?: () => void;
+  } => {
     const { price, name, image_mobile, type } = ingredient;
     return {
       text: name,
       price,
       thumbnail: image_mobile,
-      ...(type !== "bon" && {
+      ...(type !== "bun" && {
         handleClose: () => dispatch(deleteIngredient(index)),
       }),
     };
   };
 
-  const bunProps = { ...getProps(bun, 0), isLocked: true };
+  const bunProps = bun && { ...(getProps(bun, 0)), isLocked: true };
 
-  const bunTop = { ...bunProps, text: `${bunProps.text} (верх)`, type: "top" };
-  const bunBottom = {
+  const bunTop = bunProps && {
+    ...bunProps,
+    text: `${bunProps.text} (верх)`,
+    type: "top" as TBunType,
+  };
+  const bunBottom = bunTop && {
     ...bunTop,
     text: `${bunProps.text} (низ)`,
-    type: "bottom",
+    type: "bottom" as TBunType,
   };
 
   const [, dragList] = useDrop({ accept: "ingredient-sort" });
@@ -114,7 +128,7 @@ const BurgerConstructor = () => {
     <div className={classNames(styles.burgerConstructor, "ml-10")}>
       <div ref={constructorList} className={styles.list}>
         <div className={classNames(styles.listItem, "mb-4")}>
-          {bun && <ConstructorElement {...bunTop} />}
+          {bunTop && <ConstructorElement {...bunTop} />}
         </div>
         <ul
           ref={dragList}
@@ -137,7 +151,7 @@ const BurgerConstructor = () => {
           ))}
         </ul>
         <div className={classNames(styles.listItem, "mb-10")}>
-          {bun && <ConstructorElement {...bunBottom} />}
+          {bunBottom && <ConstructorElement {...bunBottom} />}
         </div>
       </div>
       <div className={styles.cart}>

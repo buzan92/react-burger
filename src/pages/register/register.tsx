@@ -9,17 +9,18 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../services/actions/user";
 import Loader from "../../components/loader/loader";
+import { IState } from "../../types";
 
 const RegisterPage = () => {
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const { isLoading, isLoggedIn } = useSelector(state => state.user);
+  const dispatch: any = useDispatch();
+  const history = useHistory<{ from: string }>();
+  const { isLoading, isLoggedIn } = useSelector((state: IState) => state.user);
   const [form, setForm] = useState({ name: "", email: "", password: "" });
 
-  const onSubmit = e => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(
-      register(form, isSuccess => {
+      register(form, (isSuccess: boolean) => {
         if (isSuccess) {
           history.replace({ pathname: "/reset-password" });
         }
@@ -27,12 +28,12 @@ const RegisterPage = () => {
     );
   };
 
-  const onChange = e => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   if (isLoggedIn) {
-    return <Redirect to={history.location.state?.from || '/'} />;
+    return <Redirect to={history.location.state?.from || "/"} />;
   }
 
   return (
