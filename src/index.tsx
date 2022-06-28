@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 import "./styles/index.css";
 import App from "./components/app/app";
 import reportWebVitals from "./reportWebVitals";
@@ -15,18 +15,15 @@ export const store = configureStore({
   devTools: process.env.NODE_ENV !== "production",
 });
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
-
-root.render(
+ReactDOM.render(
   <Router>
     <React.StrictMode>
       <Provider store={store}>
         <App />
       </Provider>
     </React.StrictMode>
-  </Router>
+  </Router>,
+  document.getElementById("root") as HTMLElement
 );
 
 // If you want to start measuring performance in your app, pass a function

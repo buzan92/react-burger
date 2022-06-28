@@ -15,11 +15,12 @@ import IngredientDetailsPage from "../../pages/ingredient-details/ingredient-det
 import IngredientDetailsModal from "../ingredient-details-modal/ingredient-details-modal";
 import ProtectedRoute from "../protected-route/protected-route";
 import Loader from "../loader/loader";
+import { TLocation, IState } from "../../types/";
 
 const App = () => {
-  const { isAppLoaded } = useSelector(state => state.ingredients);
-  const location = useLocation();
-  const dispatch = useDispatch();
+  const { isAppLoaded } = useSelector((state: IState) => state.ingredients);
+  const location = useLocation<TLocation>();
+  const dispatch: any = useDispatch();
 
   const initApp = useCallback(async () => {
     await dispatch(autoLogin());
@@ -28,7 +29,7 @@ const App = () => {
 
   useEffect(() => {
     initApp();
-  }, []);
+  }, [initApp]);
 
   const isModal = location.state?.isModal;
 

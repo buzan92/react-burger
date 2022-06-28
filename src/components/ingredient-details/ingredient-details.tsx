@@ -1,8 +1,9 @@
 import styles from "./ingredient-details.module.css";
 import classNames from "classnames/bind";
-import { IngredientType } from "../../prop-types/ingredient";
+import { IIngredient } from "../../types";
+import { FC } from "react";
 
-const IngredientDetails = ({ ingredient }) => {
+const IngredientDetails: FC<IIngredientDetails> = ({ ingredient }) => {
   const { name, image_large, proteins, fat, carbohydrates, calories } =
     ingredient;
   const nutrients = [
@@ -33,8 +34,8 @@ const IngredientDetails = ({ ingredient }) => {
   );
 };
 
-IngredientDetails.propTypes = {
-  ingredient: IngredientType,
-};
+interface IIngredientDetails {
+  ingredient: IIngredient;
+}
 
 export default IngredientDetails;

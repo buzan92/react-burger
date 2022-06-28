@@ -1,9 +1,10 @@
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, RouteProps } from "react-router-dom";
 import { useSelector } from "react-redux";
-import PropTypes from "prop-types";
+import { FC } from "react";
+import { IState } from "../../types";
 
-const ProtectedRoute = ({ path, children }) => {
-  const { isLoggedIn } = useSelector(store => store.user);
+const ProtectedRoute: FC<RouteProps> = ({ path, children }) => {
+  const { isLoggedIn } = useSelector((state: IState) => state.user);
 
   return (
     <Route
@@ -24,11 +25,6 @@ const ProtectedRoute = ({ path, children }) => {
       }
     />
   );
-};
-
-ProtectedRoute.propTypes = {
-  path: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
 };
 
 export default ProtectedRoute;

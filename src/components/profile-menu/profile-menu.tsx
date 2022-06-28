@@ -6,13 +6,12 @@ import { logout } from "../../services/actions/user";
 
 const ProfileMenu = () => {
   const location = useLocation();
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const history = useHistory();
 
-  const onLogout = e => {
-    e.preventDefault();
+  const onLogout = (e: React.MouseEvent<HTMLSpanElement>) => {
     dispatch(
-      logout(isSuccess => {
+      logout((isSuccess: boolean) => {
         if (isSuccess) {
           history.replace({ pathname: "/" });
         }

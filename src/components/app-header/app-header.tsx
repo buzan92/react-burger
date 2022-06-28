@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import React, { FC } from 'react';
 import {
   Logo,
   BurgerIcon,
@@ -8,8 +8,9 @@ import {
 import { NavLink, Link, useLocation } from "react-router-dom";
 import classNames from "classnames/bind";
 import styles from "./app-header.module.css";
+import { TLocation } from "../../types/";
 
-const MenuItem = ({ title, icon, to, exact, isActive }) => {
+const MenuItem: FC<IMenuItem> = ({ title, icon, to, exact, isActive }) => {
   const Icon = icon;
 
   return (
@@ -27,9 +28,9 @@ const MenuItem = ({ title, icon, to, exact, isActive }) => {
 };
 
 const AppHeader = () => {
-  const location = useLocation();
+  const location = useLocation<TLocation>();
   const isHomeActive = () => {
-    return location.pathname === '/' || location.state?.isModal;
+    return Boolean(location.pathname === '/' || location.state?.isModal);
   };
 
   return (
@@ -50,7 +51,7 @@ const AppHeader = () => {
           />
         </div>
         <Link to="/" className={styles.logoWrapper}>
-          <Logo className="logo" />
+          <Logo />
         </Link>
         <div className={styles.menuList}>
           <MenuItem title="Личный кабинет" icon={ProfileIcon} to="/profile" />
@@ -60,12 +61,12 @@ const AppHeader = () => {
   );
 };
 
-MenuItem.propTypes = {
-  title: PropTypes.string.isRequired,
-  icon: PropTypes.func.isRequired,
-  to: PropTypes.string.isRequired,
-  exact: PropTypes.bool,
-  isActive: PropTypes.func,
-};
+interface IMenuItem {
+  title: string;
+  icon: React.ElementType;
+  to: string;
+  exact?: boolean;
+  isActive?: () => boolean;
+}
 
 export default AppHeader;

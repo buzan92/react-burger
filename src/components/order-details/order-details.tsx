@@ -2,9 +2,10 @@ import { useSelector } from "react-redux";
 import classNames from "classnames/bind";
 import styles from "./order-details.module.css";
 import doneImage from "../../images/done.png";
+import { IState } from "../../types";
 
 const OrderDetails = () => {
-  const { order } = useSelector(state => state.construct);
+  const { order } = useSelector((state: IState) => state.construct);
   const formattedId = String(order?.number || "").padStart(6, "0");
 
   return (
