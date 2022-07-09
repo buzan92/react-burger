@@ -3,13 +3,13 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngredient from "../burger-ingredient/burger-ingredient";
 import classNames from "classnames/bind";
 import styles from "./burger-ingredients.module.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../hooks/state";
 import { Link } from "react-router-dom";
 import {
   toggleSelectedIngredient,
   setActiveTab,
 } from "../../services/actions/ingredients";
-import { IIngredient, IState } from "../../types";
+import { IIngredient } from "../../types";
 
 const ingredientTypes: { [type: string]: string } = {
   bun: "Булки",
@@ -18,7 +18,7 @@ const ingredientTypes: { [type: string]: string } = {
 };
 
 const Tabs: FC<ITabs> = ({ blocksRef }) => {
-  const { activeTab } = useSelector((state: IState) => state.ingredients);
+  const { activeTab } = useSelector(state => state.ingredients);
   const handleTabClick = (type: string) => {
     blocksRef.current[type].scrollIntoView({
       block: "start",
@@ -48,7 +48,7 @@ const IngredientBlock: FC<IIngredientBlock> = ({
   showIngredient,
 }) => {
   const { ingredients: burgerIngredients, bun } = useSelector(
-    (state: IState) => state.construct
+    state => state.construct
   );
 
   const counts = burgerIngredients.reduce(
@@ -91,10 +91,8 @@ const IngredientBlock: FC<IIngredientBlock> = ({
 };
 
 const BurgerIngredients = () => {
-  const dispatch: any = useDispatch();
-  const { ingredients, activeTab } = useSelector(
-    (state: IState) => state.ingredients
-  );
+  const dispatch = useDispatch();
+  const { ingredients, activeTab } = useSelector(state => state.ingredients);
 
   const showIngredient = (ingredient: IIngredient) => {
     dispatch(toggleSelectedIngredient(ingredient));

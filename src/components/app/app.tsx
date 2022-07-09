@@ -1,5 +1,4 @@
 import { Route, Switch, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useCallback } from "react";
 import { getIngredients } from "../../services/actions/ingredients";
 import { autoLogin } from "../../services/actions/user";
@@ -15,12 +14,13 @@ import IngredientDetailsPage from "../../pages/ingredient-details/ingredient-det
 import IngredientDetailsModal from "../ingredient-details-modal/ingredient-details-modal";
 import ProtectedRoute from "../protected-route/protected-route";
 import Loader from "../loader/loader";
-import { TLocation, IState } from "../../types/";
+import { TLocation } from "../../types/";
+import { useDispatch, useSelector } from "../../hooks/state";
 
 const App = () => {
-  const { isAppLoaded } = useSelector((state: IState) => state.ingredients);
+  const { isAppLoaded } = useSelector((state) => state.ingredients);
   const location = useLocation<TLocation>();
-  const dispatch: any = useDispatch();
+  const dispatch = useDispatch();
 
   const initApp = useCallback(async () => {
     await dispatch(autoLogin());

@@ -13,7 +13,7 @@ import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import BurgerIngredientDragItem from "../burger-ingredient/burger-ingredient-drag-item";
 import styles from "./burger-constructor.module.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../hooks/state";
 import {
   setSum,
   addIngredient,
@@ -23,15 +23,15 @@ import {
   sortIngredient,
 } from "../../services/actions/constructor";
 import Loader from "../loader/loader";
-import { IIngredient, IState } from "../../types";
+import { IIngredient } from "../../types";
 
 type TBunType = "top" | "bottom" | undefined;
 
 const BurgerConstructor = () => {
-  const dispatch: any = useDispatch();
+  const dispatch = useDispatch();
   const history = useHistory();
   const { ingredients, bun, sum, isShowOrderModal } = useSelector(
-    state => (state as IState).construct
+    state => state.construct
   );
   const [isLoading, setIsLoading] = useState(false);
 
@@ -47,7 +47,7 @@ const BurgerConstructor = () => {
 
   const [, constructorList] = useDrop({
     accept: "ingredient",
-    drop(ingredient) {
+    drop(ingredient: IIngredient) {
       dispatch(addIngredient(ingredient));
     },
   });
@@ -90,7 +90,7 @@ const BurgerConstructor = () => {
     };
   };
 
-  const bunProps = bun && { ...(getProps(bun, 0)), isLocked: true };
+  const bunProps = bun && { ...getProps(bun, 0), isLocked: true };
 
   const bunTop = bunProps && {
     ...bunProps,
