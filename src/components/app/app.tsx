@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "../../hooks/state";
 
 const App = () => {
   const { isAppLoaded } = useSelector(state => state.ingredients);
+  const { isShowFeedModal } = useSelector(state => state.feed);
   const location = useLocation<TLocation>();
   const dispatch = useDispatch();
 
@@ -49,7 +50,7 @@ const App = () => {
           <Route
             exact
             path="/feed/:id"
-            component={isModal ? FeedPage : FeedDetailsPage}
+            component={isShowFeedModal ? FeedPage : FeedDetailsPage}
           />
           <Route exact path="/ingredients/:id">
             {isModal ? (
@@ -63,7 +64,7 @@ const App = () => {
           </Route>
           <ProtectedRoute path="/profile">
             <ProfilePage />
-            {!isModal && (
+            {!isShowFeedModal && (
               <Route
                 exact
                 path="/profile/orders/:id"

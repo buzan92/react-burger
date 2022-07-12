@@ -1,25 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import classNames from "classnames/bind";
 import { useDispatch, useSelector } from "../../hooks/state";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import {
   wsConnectionStart,
   wsConnectionClose,
+  setShowFeedModal,
 } from "../../services/actions/feed";
 import styles from "./feed.module.css";
 import FeedCard from "../../components/feed-card/feed-card";
 import FeedStat from "../../components/feed-stat/feed-stat";
 import Modal from "../../components/modal/modal";
 import FeedDetails from "../../components/feed-details/feed-details";
-import { TLocation } from "../../types";
 
 const FeedPage = () => {
-  const [isShowFeedModal, setIsShowFeedModal] = useState(false);
-  const { orders, total, totalToday } = useSelector(state => state.feed);
+  const { orders, total, totalToday, isShowFeedModal } = useSelector(
+    state => state.feed
+  );
   const dispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation<TLocation>();
-  const isModal = location.state?.isModal;
 
   useEffect(() => {
     dispatch(wsConnectionStart("wss://norma.nomoreparties.space/orders/all"));
@@ -31,12 +30,12 @@ const FeedPage = () => {
   const showFeedModal = (_id: string): void => {
     const pathname = `/feed/${_id}`;
     history.push({ pathname, state: { isModal: true } });
-    setIsShowFeedModal(true);
+    dispatch(setShowFeedModal(true));
   };
 
   const closeFeedModal = (): void => {
     history.push({ pathname: "/feed", state: { isModal: false } });
-    setIsShowFeedModal(false);
+    dispatch(setShowFeedModal(false));
   };
 
   return (
@@ -50,7 +49,7 @@ const FeedPage = () => {
         </div>
         <FeedStat orders={orders} total={total} totalToday={totalToday} />
       </div>
-      <Modal isShow={isModal || isShowFeedModal} closeModal={closeFeedModal}>
+      <Modal isShow={isShowFeedModal} closeModal={closeFeedModal}>
         <FeedDetails />
       </Modal>
     </main>

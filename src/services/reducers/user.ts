@@ -1,4 +1,8 @@
-// import { SET_IS_LOADING, SET_USER, SET_IS_LOGGED_IN } from "../actions/user";
+import {
+  SET_IS_LOADING,
+  SET_USER,
+  SET_IS_LOGGED_IN,
+} from "../../types/state/user";
 import { IUserState, TUserActions } from "../../types/state/user";
 
 const initialState: IUserState = {
@@ -12,11 +16,11 @@ export const userReducer = (
   action: TUserActions
 ): IUserState => {
   switch (action.type) {
-    case "SET_IS_LOADING":
+    case SET_IS_LOADING:
       return { ...state, isLoading: action.payload };
-    case "SET_USER":
+    case SET_USER:
       return { ...state, user: action.payload };
-    case "SET_IS_LOGGED_IN":
+    case SET_IS_LOGGED_IN:
       return { ...state, isLoggedIn: action.payload };
     default:
       return state;

@@ -9,11 +9,18 @@ export const WS_GET_MESSAGE: "WS_GET_MESSAGE" = "WS_GET_MESSAGE";
 export const WS_CONNECTION_CLOSED: "WS_CONNECTION_CLOSED" =
   "WS_CONNECTION_CLOSED";
 export const WS_SEND_MESSAGE: "WS_SEND_MESSAGE" = "WS_SEND_MESSAGE";
+export const SET_SHOW_FEED_MODAL: "SET_SHOW_FEED_MODAL" = "SET_SHOW_FEED_MODAL";
 
 export interface IFeedState {
   orders: IFeedOrder[];
   total: number;
   totalToday: number;
+  isShowFeedModal: boolean;
+}
+
+export interface ISetShowFeedModal {
+  readonly type: typeof SET_SHOW_FEED_MODAL;
+  readonly payload: boolean; 
 }
 
 export interface IWsConnectionStart {
@@ -54,4 +61,5 @@ export type TWsActions =
   | IWsConnectionError
   | IWsGetMessage
   | IWsSendMessage
-  | IWsConnectionClosed;
+  | IWsConnectionClosed
+  | ISetShowFeedModal;

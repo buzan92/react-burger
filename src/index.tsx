@@ -10,9 +10,11 @@ import { socketMiddleware } from "./middleware/socket-middleware";
 import { reducer } from "./services/reducers";
 import { BrowserRouter as Router } from "react-router-dom";
 
+import { WSActions } from "./services/actions/feed";
+
 export const store = configureStore({
   reducer,
-  middleware: [thunk, socketMiddleware()],
+  middleware: [thunk, socketMiddleware(WSActions)],
   devTools: process.env.NODE_ENV !== "production",
 });
 

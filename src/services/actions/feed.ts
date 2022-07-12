@@ -13,7 +13,14 @@ import {
   IWsSendMessage,
   IWsConnectionClosed,
   IWsConnectionStart,
+  ISetShowFeedModal,
+  SET_SHOW_FEED_MODAL,
 } from "../../types/state/feed";
+
+export const setShowFeedModal = (payload: boolean): ISetShowFeedModal => ({
+  type: SET_SHOW_FEED_MODAL,
+  payload,
+});
 
 export const wsConnectionStart = (payload: string): IWsConnectionStart => ({
   type: WS_CONNECTION_START,
@@ -45,3 +52,17 @@ export const wsSendMessage = (payload: any): IWsSendMessage => ({
 export const wsConnectionClosed = (): IWsConnectionClosed => ({
   type: WS_CONNECTION_CLOSED,
 });
+
+export interface IWSActions {
+  wsConnectionSuccess: typeof wsConnectionSuccess;
+  wsConnectionError: typeof wsConnectionError;
+  wsGetMessage: typeof wsGetMessage;
+  wsConnectionClosed: typeof wsConnectionClosed;
+}
+
+export const WSActions = {
+  wsConnectionSuccess,
+  wsConnectionError,
+  wsGetMessage,
+  wsConnectionClosed,
+}

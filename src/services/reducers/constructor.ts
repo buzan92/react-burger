@@ -1,3 +1,11 @@
+import {
+  ADD_INGREDIENT,
+  DELETE_INGREDIENT,
+  SORT_INGREDIENT,
+  SET_SUM,
+  TOGGLE_ORDER,
+  CLEAR_CONSTRUCTOR,
+} from "../../types/state/constructor";
 import { IConstructorState, TConstructorActions } from "../../types/state/constructor";
 
 const initialState: IConstructorState = {
@@ -14,7 +22,7 @@ export const constructorReducer = (
 ): IConstructorState => {
   const { type } = action;
   switch (type) {
-    case 'ADD_INGREDIENT':
+    case ADD_INGREDIENT:
       const isBun = action.payload.type === "bun";
       return {
         ...state,
@@ -23,21 +31,21 @@ export const constructorReducer = (
           ingredients: [...state.ingredients, action.payload],
         }),
       };
-    case 'DELETE_INGREDIENT':
+    case DELETE_INGREDIENT:
       return {
         ...state,
         ingredients: state.ingredients.filter((_, index) => index !== action.payload),
       };
-    case 'SORT_INGREDIENT':
+    case SORT_INGREDIENT:
       const ingredients = [...state.ingredients];
       const draggable = ingredients.splice(action.payload.oldIndex, 1)[0];
       ingredients.splice(action.payload.index, 0, draggable);
       return { ...state, ingredients };
-    case 'SET_SUM':
+    case SET_SUM:
       return { ...state, sum: action.payload };
-    case 'TOGGLE_ORDER':
+    case TOGGLE_ORDER:
       return { ...state, order: action.payload, isShowOrderModal: Boolean(action.payload) };
-    case 'CLEAR_CONSTRUCTOR':
+    case CLEAR_CONSTRUCTOR:
       return { ...state, bun: null, ingredients: [] };
     default:
       return state;
