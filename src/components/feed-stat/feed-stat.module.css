@@ -1,0 +1,47 @@
+.feedStat {
+  display: flex;
+  flex-direction: column;
+  padding-left: 60px;
+  width: 100%;
+}
+
+.colWrapper {
+  display: flex;
+  margin-bottom: 60px;
+}
+
+.col {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.col > span {
+  height: 30px;
+}
+
+.colList {
+  margin: 24px 0 0;
+  padding: 0;
+}
+
+.colList > li {
+  list-style: none;
+}
+
+.statBlock {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 60px;
+}
+
+.statBlock > h1 {
+  margin: 0;
+  padding: 0;
+  text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25),
+    0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
+}
+
+.statBlock:last-child {
+  margin-bottom: 0;
+}

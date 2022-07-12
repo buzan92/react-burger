@@ -6,11 +6,13 @@ import { store } from "../..";
 import { TConstructorActions } from "./constructor";
 import { TIngredientsActions } from "./ingredients";
 import { TUserActions } from "./user";
+import { TWsActions } from './feed';
 
 export type TAppActions =
   | TConstructorActions
   | TIngredientsActions
-  | TUserActions;
+  | TUserActions
+  | TWsActions;
 
 export type RootState = ReturnType<typeof store.getState>;
 

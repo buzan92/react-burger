@@ -10,6 +10,8 @@ import ForgotPasswordPage from "../../pages/forgot-password/forgot-password";
 import ResetPasswordPage from "../../pages/reset-password/reset-password";
 import NotFoundPage from "../../pages/not-found/not-found";
 import ProfilePage from "../../pages/profile/profile";
+import FeedPage from "../../pages/feed/feed";
+import FeedDetailsPage from "../../pages/feed-details/feed-details";
 import IngredientDetailsPage from "../../pages/ingredient-details/ingredient-details";
 import IngredientDetailsModal from "../ingredient-details-modal/ingredient-details-modal";
 import ProtectedRoute from "../protected-route/protected-route";
@@ -18,7 +20,7 @@ import { TLocation } from "../../types/";
 import { useDispatch, useSelector } from "../../hooks/state";
 
 const App = () => {
-  const { isAppLoaded } = useSelector((state) => state.ingredients);
+  const { isAppLoaded } = useSelector(state => state.ingredients);
   const location = useLocation<TLocation>();
   const dispatch = useDispatch();
 
@@ -43,6 +45,12 @@ const App = () => {
           <Route exact path="/register" component={RegisterPage} />
           <Route exact path="/forgot-password" component={ForgotPasswordPage} />
           <Route exact path="/reset-password" component={ResetPasswordPage} />
+          <Route exact path="/feed" component={FeedPage} />
+          <Route
+            exact
+            path="/feed/:id"
+            component={isModal ? FeedPage : FeedDetailsPage}
+          />
           <Route exact path="/ingredients/:id">
             {isModal ? (
               <>
@@ -55,10 +63,21 @@ const App = () => {
           </Route>
           <ProtectedRoute path="/profile">
             <ProfilePage />
+            {!isModal && (
+              <Route
+                exact
+                path="/profile/orders/:id"
+                component={FeedDetailsPage}
+              />
+            )}
           </ProtectedRoute>
           <Route component={NotFoundPage} />
         </Switch>
-      ) : <div className="mt-45"><Loader /></div>}
+      ) : (
+        <div className="mt-45">
+          <Loader />
+        </div>
+      )}
     </>
   );
 };

@@ -6,12 +6,13 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import thunk from "redux-thunk";
+import { socketMiddleware } from "./middleware/socket-middleware";
 import { reducer } from "./services/reducers";
 import { BrowserRouter as Router } from "react-router-dom";
 
 export const store = configureStore({
   reducer,
-  middleware: [thunk],
+  middleware: [thunk, socketMiddleware()],
   devTools: process.env.NODE_ENV !== "production",
 });
 

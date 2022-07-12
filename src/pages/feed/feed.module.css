@@ -1,0 +1,19 @@
+.main {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.content {
+  display: flex;
+}
+
+.feedList {
+  padding-right: 7px;
+  max-height: calc(100vh - 300px);
+  overflow-y: scroll;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: 593px;
+}
