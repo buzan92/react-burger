@@ -1,10 +1,9 @@
 import { Route, Redirect, RouteProps } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../hooks/state";
 import { FC } from "react";
-import { IState } from "../../types";
 
 const ProtectedRoute: FC<RouteProps> = ({ path, children }) => {
-  const { isLoggedIn } = useSelector((state: IState) => state.user);
+  const { isLoggedIn } = useSelector(state => state.user);
 
   return (
     <Route

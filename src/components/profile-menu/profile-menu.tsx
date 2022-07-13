@@ -1,12 +1,12 @@
 import { NavLink, useLocation, useHistory } from "react-router-dom";
 import classNames from "classnames/bind";
 import styles from "./profile-menu.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../hooks/state";
 import { logout } from "../../services/actions/user";
 
 const ProfileMenu = () => {
   const location = useLocation();
-  const dispatch: any = useDispatch();
+  const dispatch = useDispatch();
   const history = useHistory();
 
   const onLogout = (e: React.MouseEvent<HTMLSpanElement>) => {

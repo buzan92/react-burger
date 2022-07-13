@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../hooks/state";
 import styles from "./ingredient-details.module.css";
 import IngredientDetails from "../../components/ingredient-details/ingredient-details";
-import { IState, IIngredient } from "../../types";
+import { IIngredient } from "../../types";
 
 const IngredientDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
-  const { ingredients } = useSelector((state: IState) => state.ingredients);
+  const { ingredients } = useSelector(state => state.ingredients);
   const ingredient = ingredients.find(({ _id }) => _id === id) as IIngredient;
 
   return (

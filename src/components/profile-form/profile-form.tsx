@@ -5,14 +5,14 @@ import {
   PasswordInput,
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../hooks/state";
 import { getUser, updateUser } from "../../services/actions/user";
 import Loader from "../../components/loader/loader";
-import { IState, TResponse, IUserResponse } from "../../types";
+import { TResponse, IUserResponse } from "../../types";
 
 const ProfileForm = () => {
-  const dispatch: any = useDispatch();
-  const { isLoading, user } = useSelector((state: IState) => state.user);
+  const dispatch = useDispatch();
+  const { isLoading, user } = useSelector(state => state.user);
   const [form, setForm] = useState({ name: "", email: "", password: "" });
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const ProfileForm = () => {
         }
       })
     );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = () => {
@@ -32,7 +32,7 @@ const ProfileForm = () => {
   };
 
   const cancelEdit = () => {
-    setForm({ ...user, password: "" });
+    setForm({ ...user!, password: "" });
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

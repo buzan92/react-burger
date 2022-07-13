@@ -4,16 +4,15 @@ import {
   Button,
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../hooks/state";
 import { forgotPassword } from "../../services/actions/user";
 import Loader from "../../components/loader/loader";
-import { IState } from "../../types";
 
 const ForgotPasswordPage = () => {
-  const dispatch: any = useDispatch();
+  const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const { isLoading } = useSelector((state: IState) => state.user);
+  const { isLoading } = useSelector(state => state.user);
   const [form, setForm] = useState({ email: "" });
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {

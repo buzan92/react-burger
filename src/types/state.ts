@@ -19,6 +19,16 @@ export interface IOrder {
   _id: string;
 }
 
+export interface IFeedOrder {
+  createdAt: string;
+  ingredients: string[];
+  name: string;
+  number: number;
+  status: string;
+  updatedAt: string;
+  _id: string;
+}
+
 export interface IState {
   construct: {
     bun: IIngredient | null;

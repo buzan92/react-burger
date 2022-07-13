@@ -6,15 +6,14 @@ import {
   PasswordInput,
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../hooks/state";
 import { register } from "../../services/actions/user";
 import Loader from "../../components/loader/loader";
-import { IState } from "../../types";
 
 const RegisterPage = () => {
-  const dispatch: any = useDispatch();
+  const dispatch = useDispatch();
   const history = useHistory<{ from: string }>();
-  const { isLoading, isLoggedIn } = useSelector((state: IState) => state.user);
+  const { isLoading, isLoggedIn } = useSelector(state => state.user);
   const [form, setForm] = useState({ name: "", email: "", password: "" });
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
