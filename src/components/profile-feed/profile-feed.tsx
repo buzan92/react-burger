@@ -28,13 +28,12 @@ const ProfileFeed = () => {
   }, [dispatch]);
 
   const showFeedModal = (_id: string): void => {
-    const pathname = `/profile/orders/${_id}`;
-    history.push({ pathname, state: { isModal: true } });
+    history.push({ pathname: `/profile/orders/${_id}` });
     dispatch(setShowFeedModal(true));
   };
 
   const closeFeedModal = (): void => {
-    history.push({ pathname: "/profile/orders", state: { isModal: false } });
+    history.push({ pathname: "/profile/orders" });
     dispatch(setShowFeedModal(false));
   };
 

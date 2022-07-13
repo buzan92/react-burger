@@ -58,6 +58,9 @@ export interface IWSActions {
   wsConnectionError: typeof wsConnectionError;
   wsGetMessage: typeof wsGetMessage;
   wsConnectionClosed: typeof wsConnectionClosed;
+  WS_CONNECTION_START: typeof WS_CONNECTION_START;
+  WS_CONNECTION_CLOSE: typeof WS_CONNECTION_CLOSE;
+  WS_SEND_MESSAGE: typeof WS_SEND_MESSAGE;
 }
 
 export const WSActions = {
@@ -65,4 +68,7 @@ export const WSActions = {
   wsConnectionError,
   wsGetMessage,
   wsConnectionClosed,
+  WS_CONNECTION_START,
+  WS_CONNECTION_CLOSE,
+  WS_SEND_MESSAGE,
 }

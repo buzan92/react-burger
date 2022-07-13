@@ -1,10 +1,5 @@
 import type { Middleware, MiddlewareAPI } from "redux";
 import { AppDispatch, RootState, TAppActions } from "../types/state/state";
-import {
-  WS_CONNECTION_START,
-  WS_CONNECTION_CLOSE,
-  WS_SEND_MESSAGE,
-} from "../types/state/feed";
 import { IWSActions } from "../services/actions/feed";
 
 export const socketMiddleware = (wsActions: IWSActions): Middleware => {
@@ -14,10 +9,10 @@ export const socketMiddleware = (wsActions: IWSActions): Middleware => {
     return next => (action: TAppActions) => {
       const { dispatch } = store;
 
-      if (action.type === WS_CONNECTION_START) {
+      if (action.type === wsActions.WS_CONNECTION_START) {
         socket = new WebSocket(action.payload);
       }
-      if (socket && action.type === WS_CONNECTION_CLOSE) {
+      if (socket && action.type === wsActions.WS_CONNECTION_CLOSE) {
         socket.close(1000, "close");
       }
       if (socket) {
@@ -37,7 +32,7 @@ export const socketMiddleware = (wsActions: IWSActions): Middleware => {
           dispatch(wsActions.wsConnectionClosed());
         };
 
-        if (action.type === WS_SEND_MESSAGE) {
+        if (action.type === wsActions.WS_SEND_MESSAGE) {
           const message = action.payload;
           socket.send(JSON.stringify(message));
         }

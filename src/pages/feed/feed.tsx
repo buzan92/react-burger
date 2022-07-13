@@ -28,13 +28,12 @@ const FeedPage = () => {
   }, [dispatch]);
 
   const showFeedModal = (_id: string): void => {
-    const pathname = `/feed/${_id}`;
-    history.push({ pathname, state: { isModal: true } });
+    history.push({ pathname: `/feed/${_id}` });
     dispatch(setShowFeedModal(true));
   };
 
   const closeFeedModal = (): void => {
-    history.push({ pathname: "/feed", state: { isModal: false } });
+    history.push({ pathname: "/feed"  });
     dispatch(setShowFeedModal(false));
   };
 
